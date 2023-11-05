@@ -1,44 +1,44 @@
-import pandas as pd
-import numpy as np
 import pickle
-import spacy
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
-
+import spacy
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
+
+# Chargez le modèle Spacy une fois
+nlp = spacy.load('en_core_web_lg')
+
+# Fonction pour traiter le commentaire
+
 
 def treat_comment(comment):
-  nlp = spacy.load('en_core_web_lg')
-  spacy_comment = nlp(comment, disable=["parser", "tagger", "ner", "textcat"])
-  treated_tokens = []
-  i = 0
-  for w in spacy_comment:
-    if w.is_alpha and not w.is_stop:
-      i += 1
-      print(f"Token {i}: {w.text}")
-      treated_tokens.append(w.text)
-  return " ".join(treated_tokens)
+    spacy_comment = nlp(
+        comment, disable=["parser", "tagger", "ner", "textcat"])
+    treated_tokens = [
+        token.text for token in spacy_comment if token.is_alpha and not token.is_stop]
+    return " ".join(treated_tokens)
 
-with open('Fmodel.pkl', 'rb') as f:
+
+# Charger le modèle et le vectorisateur une seule fois
+with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
-
-with open('XVect.pkl', 'rb') as f:
+with open('tfidf_vectorizer.pkl', 'rb') as f:
     vectorizer = pickle.load(f)
 
-@app.route("/api/predict")
+# Endpoint pour la prédiction
+
+
+@app.route("/api/predict", methods=["POST"])
 @cross_origin()
 def predict():
-  text = 'je fais un test'
-  model = pickle.load(open("Fmodel.pkl", "rb"))
-  vectorizer = pickle.load(open("XVect.pkl", "rb"))
-  formatVector = vectorizer.tranform([treat_comment(text)])
-  prediction = model.predict(formatVector)
-  print(prediction)
-  return jsonify(prediction)
+    data = request.json
+    text = data.get("comment", "")
+    treated_text = treat_comment(text)
+    format_vector = vectorizer.transform([treated_text])
+    prediction = model.predict(format_vector)
+    print("Vérification", prediction.tolist())
+    return jsonify({"prediction": prediction.tolist()})
 
 
 if __name__ == "__main__":

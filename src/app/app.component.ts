@@ -13,8 +13,10 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   submitComment() {
-    this.http.post('http://localhost:5000/analyze', {comment: this.comment}).subscribe((response: any) => {
-      if(response.status === 'negative') {
+    this.http.post('http://localhost:5000/api/predict', {comment: this.comment}).subscribe((response: any) => {
+     console.log('ici', this.comment);
+     console.log('la', response.prediction[0]);
+    if(response.prediction[0] === true) {
         this.warning = true;
       } else {
         this.warning = false;
