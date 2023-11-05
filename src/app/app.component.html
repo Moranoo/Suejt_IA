@@ -1,13 +1,22 @@
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background-color: #f0f0f0;">
-  
-  <form (submit)="submitComment()" style="text-align: center; background-color: #fff; padding: 20px; border-radius: 5px;">
-    <textarea [(ngModel)]="comment" name="comment" placeholder="Écrivez votre commentaire ici..." style="width: 100%;"></textarea>
-    <button type="submit" style="background-color: #3498db; color: #fff;">Soumettre</button>
+<div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+  <form (submit)="submitComment()">
+    <div class="form-group">
+      <label for="comment" style="margin-bottom: 10px;">Écrivez votre commentaire ici...</label>
+      <textarea [(ngModel)]="comment" name="comment" id="comment" class="form-control" style="width: 100%;"></textarea>    </div>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <button type="submit" class="btn btn-primary">Soumettre</button>
+    </div>
   </form>
+  <div *ngIf="warning" class="alert alert-danger mt-3">
+    Attention : Votre commentaire semble négatif!
+  </div>
 </div>
-<div *ngIf="warning" class="alert alert-danger" style="color: red;">
-  Attention : Votre commentaire semble négatif!
-</div>
+
+
+
+
+
+
 
 
 
