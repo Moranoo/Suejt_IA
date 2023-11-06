@@ -1,27 +1,17 @@
 <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
-  <form (submit)="submitComment()">
+  <form (ngSubmit)="submitComment()">
     <div class="form-group">
       <label for="comment" style="margin-bottom: 10px;">Écrivez votre commentaire ici...</label>
-      <textarea [(ngModel)]="comment" name="comment" id="comment" class="form-control" style="width: 100%;"></textarea>    </div>
+      <textarea [(ngModel)]="comment" name="comment" id="comment" class="form-control" style="width: 100%;"></textarea>
+    </div>
     <div class="d-flex flex-column align-items-center justify-content-center">
       <button type="submit" class="btn btn-primary">Soumettre</button>
     </div>
   </form>
   <div *ngIf="warning" class="alert alert-danger mt-3">
     Attention : Votre commentaire semble négatif!
+    <div class="d-flex flex-column align-items-center justify-content-center">
+    <img src="assets/Blague.jpg" alt="image de blague" width="300" height="300" >
+  </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
