@@ -37,7 +37,6 @@ def predict():
     treated_text = treat_comment(text)
     format_vector = vectorizer.transform([treated_text])
     prediction = model.predict(format_vector)
-    print("Vérification", prediction.tolist())
     return jsonify({"prediction": prediction.tolist()})
 
 

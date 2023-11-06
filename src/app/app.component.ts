@@ -14,8 +14,6 @@ export class AppComponent {
 
   submitComment() {
     this.http.post('http://localhost:5000/api/predict', {comment: this.comment}).subscribe((response: any) => {
-     console.log('ici', this.comment);
-     console.log('la', response.prediction[0]);
     if(response.prediction[0] === true) {
         this.warning = true;
       } else {
